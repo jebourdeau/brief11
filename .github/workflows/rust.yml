@@ -64,7 +64,7 @@ jobs:
           VERSION: "${{ needs.get-version.outputs.version }}"
           REPO: "${{ github.repository }}"
           COMMIT: "${{ github.sha }}"
-          GH-TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
          
         run: |
           gh release create --repo $REPO --target $COMMIT $VERSION build/*
