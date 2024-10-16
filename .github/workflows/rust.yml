@@ -9,10 +9,14 @@ jobs:
     with:
       release-branches: '^(main)$'
   build:
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ubuntu-latest
+    if: ${{ needs.get-version.outputs.will-release == 'true' }}
+    needs: 
+      - get-version
+    #runs-on: ${{matrix.os}}
+    #strategy:
+     # matrix:
+      #  os: [ubuntu-latest, macos-latest, windows-latest]
     
     steps:
     - name: Checkout repository
