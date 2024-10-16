@@ -2,7 +2,10 @@ name: Rust CI
 
 on:
   push:
-   
+    branches:
+       - main
+       - beta
+       
 jobs:
   get-version:
     uses: shiipou/github-actions/.github/workflows/get-version.yml@main
@@ -64,10 +67,10 @@ jobs:
           VERSION: "${{ needs.get-version.outputs.version }}"
           REPO: "${{ github.repository }}"
           COMMIT: "${{ github.sha }}"
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
          
         run: |
-          gh release create --repo $REPO --target $COMMIT $VERSION build/*
+          gh release create $VERSION dist/* --repo $REPO --target $COMMIT
       
     
   
