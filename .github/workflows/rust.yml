@@ -8,7 +8,7 @@ jobs:
     uses: shiipou/github-actions/.github/workflows/get-version.yml@main
     with:
       release-branches: '^(main)$'
-      pre-release-branche: '^(beta)$'
+      prerelease-branches: '^(beta)$'
       
   build:
     runs-on: ubuntu-latest
