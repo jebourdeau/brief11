@@ -5,7 +5,10 @@ on:
     branches:
        - main
        - beta
-       
+
+permissions:
+  contents: write
+
 jobs:
   get-version:
     uses: shiipou/github-actions/.github/workflows/get-version.yml@main
@@ -67,7 +70,7 @@ jobs:
           VERSION: "${{ needs.get-version.outputs.version }}"
           REPO: "${{ github.repository }}"
           COMMIT: "${{ github.sha }}"
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ GITHUB_TOKEN }}
          
         run: |
           gh release create $VERSION dist/* --repo $REPO --target $COMMIT
