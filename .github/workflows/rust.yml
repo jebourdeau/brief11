@@ -5,7 +5,7 @@ on:
    
 jobs:
   get-version:
-    uses: github-actions/.github/workflows/rust.yml@main
+    uses: shiipou/github-actions/.github/workflows/rust.yml@main
     with:
       release-branches: '^(main)$'
   build:
