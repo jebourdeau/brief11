@@ -8,6 +8,8 @@ jobs:
     uses: shiipou/github-actions/.github/workflows/get-version.yml@main
     with:
       release-branches: '^(main)$'
+      pre-release-branche: '^(beta)$'
+      
   build:
     runs-on: ubuntu-latest
     if: ${{ needs.get-version.outputs.will-release == 'true' }}   #construction si la nouvelle version a été release
@@ -62,7 +64,7 @@ jobs:
           VERSION: "${{ needs.get-version.outputs.version }}"
           REPO: "${{ github.repository }}"
           COMMIT: "${{ github.sha }}"
-          GH-TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH-TOKEN: ${{ github.token }}
          
         run: |
           gh release create --repo $REPO --target $COMMIT $VERSION build/*
