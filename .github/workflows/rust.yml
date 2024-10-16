@@ -10,33 +10,34 @@ jobs:
       release-branches: '^(main)$'
   build:
     runs-on: ubuntu-latest
-    if: ${{ needs.get-version.outputs.will-release == 'true' }}
+    if: ${{ needs.get-version.outputs.will-release == 'true' }}   #construction si la nouvelle version a été release
     needs: 
       - get-version
-    #runs-on: ${{matrix.os}}
+    #runs-on: ${{matrix.os}}                                       mettre en multi OS
     #strategy:
      # matrix:
       #  os: [ubuntu-latest, macos-latest, windows-latest]
     
     steps:
-    - name: Checkout repository
+    - name: Checkout repository                                    
       uses: actions/checkout@v2
 
-    - name: Set-up Rust
+    - name: Set-up Rust                                            #set up de la variable avec une toolchain 
       uses: actions-rs/toolchain@v1.0.6
       with:    
         toolchain: stable
         target: wasm32-unknown-unknown
-    
+    #- name: trunk-action                                         importe les fichiers déjà compilé.
+    #  uses: jetli/trunk-action@v0.5.0
         
-    - name: dependencies
+    - name: dependencies                                           # creer les dépendances non compilé
       run: |
         cargo install trunk wasm-bindgen-cli
 
     - name: build 
-      run: trunk build --release
+      run: trunk build --release                                        
 
-    - name: upload artifacts
+    - name: upload artifacts                                      # upldoad les artefacts vers la route "dist"
       uses: actions/upload-artifact@v4.4.3
       with: 
            name: rust
@@ -55,10 +56,16 @@ jobs:
         with:
           name: rust
           path: dist
-          
+
+      - name: Create Gh Release  
         env:
+          VERSION: "${{ needs.get-version.outputs.version }}"
+          REPO: "${{ github.repository }}"
+          COMMIT: "${{ github.sha }}"
           GH-TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
+         
+        run: |
+          gh release create --repo $REPO --target $COMMIT $VERSION build/*
       
     
   
