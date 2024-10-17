@@ -70,7 +70,7 @@ jobs:
           VERSION: "${{ needs.get-version.outputs.version }}"
           REPO: "${{ github.repository }}"
           COMMIT: "${{ github.sha }}"
-          GH_TOKEN: ${{ secret.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ GITHUB_TOKEN }}
          
         run: |
           gh release create $VERSION dist/* --repo $REPO --target $COMMIT
